@@ -7289,9 +7289,9 @@ bool player::head_grow(int num, bool heal) const
 {
     if ((you.form == transformation::none ||
          you.form == transformation::appendage ||
-         you.form == transformation::blade_hands) && num != 0 && num < 27)
+         you.form == transformation::blade_hands) && num != 0 && num < 100)
     {
-        num = min(num, 27 - you.heads());
+        num = min(num, 100 - you.heads());
         
         if (num > 0)
         {    
@@ -7299,7 +7299,7 @@ bool player::head_grow(int num, bool heal) const
                                                                   : (abs(num)!=1? "are cut away" : "is cut away"));
             for (int i = 0; i < num; i++)
             {    
-                if (you.heads() >= 27)
+                if (you.heads() >= 100)
                     break;
                 you.props[HYDRA_HEADS_NET_LOSS].get_int()--;
                 _head_loss_xp();
@@ -7316,7 +7316,7 @@ bool player::head_grow(int num, bool heal) const
                 you.props[HYDRA_HEADS_NET_LOSS].get_int()++;
                 _head_loss_xp();
                 if (heal)
-                    ouch(4 + random2(4), KILLED_BY_DRAINING);
+                    ouch(4 + random2(4), KILLED_BY_DECAPITATION);
             }
         }
     }
@@ -7328,7 +7328,7 @@ bool player::head_grow(int num, bool heal) const
                 you.props[HYDRA_HEADS_NET_LOSS].get_int()++;
                 _head_loss_xp();
                 if (heal)
-                    ouch(4 + random2(4), KILLED_BY_DRAINING);
+                    ouch(4 + random2(4), KILLED_BY_DECAPITATION);
         }
     }
     else if (num == 0 && heal)
@@ -7341,7 +7341,7 @@ bool player::head_grow(int num, bool heal) const
         }
         else
         {
-            mprf(MSGCH_INTRINSIC_GAIN, "Your head grows one more.");
+            mprf(MSGCH_INTRINSIC_GAIN, "Your final head is severed from your body.");
         }
     }
     if (num < 0 || num == 0 && !heal)

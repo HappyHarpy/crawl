@@ -968,7 +968,7 @@ int player::heads() const
         if (props.exists(HYDRA_HEADS_NET_LOSS))
             net_loss = props[HYDRA_HEADS_NET_LOSS].get_int() + you.get_mutation_level(MUT_MISSING_NECK);
         // Maybe die if the net loss is bigger?
-        return max(1, you.experience_level - net_loss); 
+        return max(1); 
     }
     return 1; // not actually always true
 }

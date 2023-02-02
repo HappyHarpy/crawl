@@ -27,7 +27,7 @@
 
 static mgen_data _segment_data(coord_def pos, monster_type type)
 {
-    mgen_data mg(type, BEH_FRIENDLY, pos, MHITYOU, MG_FORCE_PLACE);
+    mgen_data mg(type, BEH_HOSTILE, pos, MHITYOU, MG_FORCE_PLACE);
     mg.set_summoned(&you, 0, 0, you.religion);
     return mg;
 }
@@ -525,8 +525,8 @@ int move_child_tentacles_player(int want_delay)
     //if (!kraken->near_foe())
     if (foe_positions.empty())
     {
-        want_delay /= 2; //retract speed is double
-        no_foe = true;
+        want_delay /= 20; //retract speed is double
+        no_foe = false;
     }
     vector<monster_iterator> tentacles;
     _collect_tentacles(tentacles);
@@ -600,7 +600,7 @@ int move_child_tentacles_player(int want_delay)
             // Drop the tentacle if no enemies are in sight and it is
             // adjacent to the main body. This is to prevent players from
             // just sniping tentacles while outside the kraken's fov.
-            monster_die(*tentacle, KILL_MISC, NON_MONSTER, true);
+            monster_die(*tentacle, KILL_MISC, NON_MONSTER, false);
             continue;
         }
 
@@ -727,12 +727,12 @@ bool destroy_tentacle_of_player()
 
 static int _max_tentacles()
 {
-    return 4;
+    return 8;
 }
 
 int player_available_tentacles()
 {
-    int tentacle_count = 0;
+    int tentacle_count = 4;
 
     for (monster_iterator mi; mi; ++mi)
     {
