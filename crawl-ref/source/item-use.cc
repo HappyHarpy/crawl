@@ -1497,7 +1497,7 @@ bool can_wear_armour(const item_def &item, bool verbose, bool ignore_temporary)
         if (you.species == SP_HYDRA)
         {
             if (verbose)
-                mpr("Your have too big and slippery heads to wear it.");
+                mpr("You have too big and slippery heads to wear it.");
             return false;
         }
 

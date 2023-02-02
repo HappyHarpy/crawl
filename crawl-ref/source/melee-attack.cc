@@ -2451,6 +2451,7 @@ bool melee_attack::consider_decapitation(int dam, int damage_type)
             mpr("The flame cauterises the wound!");
         if (defender->is_player() && defender->heads() == 0)
             defender->hurt(attacker, INSTANT_DEATH);
+            mpr("Your last head is severed from your body!")
         return false;
     }
 
@@ -2485,7 +2486,8 @@ static bool actor_can_lose_heads(const actor* defender)
         && defender->type != MONS_SPECTRAL_THING
         && defender->as_monster()->mons_species() != MONS_SERPENT_OF_HELL
         || defender->is_player() 
-            && you.has_hydra_multi_attack())
+            && you.has_hydra_multi_attack()
+        || defender-FormHydra)
     {
         return true;
     }
@@ -2537,7 +2539,7 @@ bool melee_attack::attack_chops_heads(int dam, int dam_type)
         return false;
 
     // You need to have done at least some damage.
-    if (dam <= 0 || dam < 4 && coinflip())
+    if (dam <= 0 || dam < 0 && coinflip())
         return false;
 
     // ok, good enough!
@@ -2593,6 +2595,21 @@ void melee_attack::decapitate(int dam_type)
         return;
     }
 
+if (heads == 1 && defender->is_player()) // will be zero afterwards
+    {
+        if (defender_visible)
+        {
+            mprf("%s %s %s last head off!",
+                 atk_name(DESC_THE).c_str(),
+                 attacker->conj_verb(verb).c_str(),
+                 apostrophise(defender_name(true)).c_str());
+        }
+
+        defender->hurt(attacker, INSTANT_DEATH);
+
+        return;
+    }
+    
     if (defender_visible)
     {
         mprf("%s %s one of %s heads off!",
